@@ -20,6 +20,12 @@ app.use('/api/protected', protectedRoutes);
 const profileRoutes = require('./routes/profile');
 app.use('/api/profile', profileRoutes);
 
+const projectRoutes = require('./routes/projectRoutes');
+app.use('/api/projects', projectRoutes);
+
+const adminRoutes = require('./routes/admin');
+app.use('/api/admin', adminRoutes);
+
 app.use((err, req, res, next) => {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
