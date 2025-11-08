@@ -1,3 +1,4 @@
+// src/controllers/profileController.js
 const User = require('../models/User');
 
 // Get current user's profile

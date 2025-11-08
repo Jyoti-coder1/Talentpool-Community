@@ -8,7 +8,7 @@ const createProject = async (req, res) => {
             ...req.body,
             owner: req.user._id,
         });
-        await User.findByIdAndUpdate(req.user,_id, {
+        await User.findByIdAndUpdate(req.user._id, {
             $push: { ownedProjects: project._id },
         });
     
