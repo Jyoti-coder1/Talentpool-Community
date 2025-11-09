@@ -14,10 +14,7 @@ const register = async (req, res) => {
         let user = await User.findOne({ email });
         if (user) return res.status(400).json({ message: 'User already exists' });
 
-        const salt = await bcrypt.genSalt(10);
-        const hashed = await bcrypt.hash(password, salt);
-
-        user = new User({ name, email, password: hashed, role });
+        user = new User({ name, email, password, role });
         await user.save();
 
         const payload = { userId: user._id, role: user.role };
