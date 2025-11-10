@@ -10,7 +10,11 @@ const auth = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
+        req.user = {
+            _id: decoded.userId,
+            role: decoded.role,
+            name: decoded.name
+        };
         next();
     } catch (err) {
         console.err('JWT verification error:', err.message);

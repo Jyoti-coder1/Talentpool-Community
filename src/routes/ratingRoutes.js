@@ -8,6 +8,6 @@ const { addRating, getRatings } = require('../controllers/ratingController');
 router.post('/', auth, addRating);
 
 // Get all or filtered ratings
-router.get('/', getRatings);
+router.get('/:projectId', getRatings);
 
 module.exports = router;

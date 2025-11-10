@@ -7,10 +7,10 @@ const Project = require('../models/Project');
 const addRating = async (req, res) => {
     try {
         const { targetUser, project, rating, feedback } = req.body;
-        if (!rating) return res.status(400).json({ message: 'Rating required' });
+        if (!rating || rating < 1 || rating > 5) return res.status(400).json({ message: 'Rating must be between 1 and 5' });
 
         const newRating = await Rating.create({
-            rater: req.user.userId,
+            rater: req.user._id,
             targetUser,
             project,
             rating,
@@ -26,7 +26,8 @@ const addRating = async (req, res) => {
 // 📊 Get ratings summary (avg per user or project)
 const getRatings = async (req, res) => {
     try {
-        const { userId, projectId } = req.query;
+        const projectId = req.params.projectId || req.query.prjectId;
+        const userId = req.query.userId;
         const query = {};
         if (userId) query.targetUser = userId;
         if (projectId) query.project = projectId;
@@ -34,7 +35,7 @@ const getRatings = async (req, res) => {
         const ratings = await Rating.find(query).populate('rater', 'name');
         const avg =
             ratings.length > 0
-                ? ratings.reduce((a, r) => a + r.rating, 0) / ratings.length
+                ? ratings.reduce((sum, r) => sum + r.rating, 0) / ratings.length
                 : 0;
 
         res.json({ avgRating: avg.toFixed(2), count: ratings.length, ratings });
